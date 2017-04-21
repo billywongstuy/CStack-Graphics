@@ -109,7 +109,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
 
         elif line == 'pop':
             if pos >= 0:
-                cstack = cstack[:-1]
+                cstack.pop()
                 pos -= 1
             
         elif line == 'sphere':
