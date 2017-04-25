@@ -79,8 +79,6 @@ See the file script for an example of the file format
 """
 ARG_COMMANDS = [ 'line', 'scale', 'move', 'rotate', 'save', 'circle', 'bezier', 'hermite', 'box', 'sphere', 'torus', 'color' ]
 
-#deepcopy
-
 def parse_file( fname, edges, polygons, transform, screen, color ):
     
     f = open(fname)
@@ -89,7 +87,6 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
     m = new_matrix()
     ident(m)
     cstack = [m]
-    pos = 0
     
     #step = 0.01
     step = 0.1
@@ -104,20 +101,18 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             #print 'args\t' + str(args)
 
         if line == 'push':
-            cstack.append(deepcopy(cstack[pos]))
-            pos += 1
+            cstack.append(deepcopy(cstack[-1]))
 
         elif line == 'pop':
-            if pos >= 0:
+            if len(cstack) > 1:
                 cstack.pop()
-                pos -= 1
             
         elif line == 'sphere':
             #print 'SPHERE\t' + str(args)
             add_sphere(polygons,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step, color)
-            matrix_mult( cstack[pos], polygons )
+            matrix_mult( cstack[-1], polygons )
             draw_polygons(polygons, screen, color)
             polygons[:] = []
             
@@ -126,7 +121,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             add_torus(polygons,
                       float(args[0]), float(args[1]), float(args[2]),
                       float(args[3]), float(args[4]), step, color)
-            matrix_mult( cstack[pos], polygons )
+            matrix_mult( cstack[-1], polygons )
             draw_polygons(polygons, screen, color)
             polygons[:] = []
             
@@ -135,7 +130,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             add_box(polygons,
                     float(args[0]), float(args[1]), float(args[2]),
                     float(args[3]), float(args[4]), float(args[5]), color)
-            matrix_mult( cstack[pos], polygons )
+            matrix_mult( cstack[-1], polygons )
             draw_polygons(polygons, screen, color)
             polygons[:] = []
             
@@ -144,7 +139,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             add_circle(edges,
                        float(args[0]), float(args[1]), float(args[2]),
                        float(args[3]), step)
-            matrix_mult( cstack[pos], edges )
+            matrix_mult( cstack[-1], edges )
             draw_lines(edges, screen, color)
             edges[:] = []
             
@@ -156,7 +151,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
                       float(args[4]), float(args[5]),
                       float(args[6]), float(args[7]),
                       step, line)                      
-            matrix_mult( cstack[pos], edges )
+            matrix_mult( cstack[-1], edges )
             draw_lines(edges, screen, color)
             edges[:] = []
             
@@ -165,19 +160,23 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             add_edge( edges,
                       float(args[0]), float(args[1]), float(args[2]),
                       float(args[3]), float(args[4]), float(args[5]) )
-            matrix_mult( cstack[pos], edges )
+            matrix_mult( cstack[-1], edges )
             draw_lines(edges, screen, color)
             edges[:] = []
             
         elif line == 'scale':
             #print 'SCALE\t' + str(args)
             t = make_scale(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, cstack[pos])
-
+            #matrix_mult(t, cstack[-1])
+            matrix_mult(cstack[-1],t)
+            cstack[-1] = t
+            
         elif line == 'move':
             #print 'MOVE\t' + str(args)
             t = make_translate(float(args[0]), float(args[1]), float(args[2]))
-            matrix_mult(t, cstack[pos])
+            #matrix_mult(t, cstack[-1])
+            matrix_mult(cstack[-1],t)
+            cstack[-1] = t
 
         elif line == 'rotate':
             #print 'ROTATE\t' + str(args)
@@ -189,8 +188,10 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
                 t = make_rotY(theta)
             else:
                 t = make_rotZ(theta)
-            matrix_mult(t, cstack[pos])
-
+            #matrix_mult(t, cstack[-1])
+            matrix_mult(cstack[-1],t)
+            cstack[-1] = t
+            
         elif line == 'color':
             color[0] = args[0]
             color[1] = args[1]
