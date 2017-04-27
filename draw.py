@@ -101,7 +101,7 @@ def add_box( points, x, y, z, width, height, depth, color=None):
                  x, y1, z, 
                  x, y1, z1,
 	         x1, y1, z1, color)
-
+    
 def add_sphere( edges, cx, cy, cz, r, step, color=None ):
     points = generate_sphere(cx, cy, cz, r, step)
     num_steps = int(1/step+0.1)
@@ -165,7 +165,7 @@ def generate_sphere( cx, cy, cz, r, step ):
             points.append([x, y, z])
             #print 'rotation: %d\tcircle%d'%(rotation, circle)
     return points
-        
+
 def add_torus( edges, cx, cy, cz, r0, r1, step, color=None ):
     points = generate_torus(cx, cy, cz, r0, r1, step)
     num_steps = int(1/step+0.1)

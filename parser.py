@@ -168,6 +168,7 @@ def parse_file( fname, edges, polygons, transform, screen, color ):
             #print 'SCALE\t' + str(args)
             t = make_scale(float(args[0]), float(args[1]), float(args[2]))
             #matrix_mult(t, cstack[-1])
+            #NOW WE TRANSFORM BEFORE SHAPES
             matrix_mult(cstack[-1],t)
             cstack[-1] = t
             
