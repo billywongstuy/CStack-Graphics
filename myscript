@@ -1,0 +1,151 @@
+push
+
+color
+255 0 0
+
+move
+250 350 0
+
+sphere
+0 0 0 50
+
+push
+
+move
+0 70 0
+
+box
+-5 0 2.5 10 25 5
+
+push
+
+move
+0 20 0
+
+rotate
+x 90
+
+torus
+0 0 0 5 20
+
+pop
+
+pop
+
+#BODY
+push
+
+move
+-60 -50 50
+
+box
+0 0 0 120 175 100
+
+#LEFT ARM
+push
+
+rotate
+z -60
+
+box
+0 0 0 40 80 100
+
+push
+
+move
+20 -50 0
+
+rotate
+z -45
+
+box
+0 0 0 40 80 100
+
+pop
+
+pop
+
+#RIGHT ARM
+push
+
+move
+120 0 0
+
+rotate
+y 180
+
+rotate
+z -60
+
+box
+0 0 0 40 80 -100
+
+push
+
+move
+20 -50 0
+
+rotate
+z -45
+
+box
+0 0 0 40 80 -100
+
+pop
+
+pop
+
+#LEFT LEG
+
+push
+
+move
+0 -175 0
+
+box
+0 0 0 40 80 100
+
+push
+
+move
+0 -80 0
+
+box
+0 0 0 40 40 180
+
+pop
+pop
+
+#RIGHT LEG
+
+push
+
+move
+120 0 0
+
+rotate
+y 180
+
+move
+0 -175 0
+
+box
+0 0 0 40 80 -100
+
+push
+
+move
+0 -80 0
+
+box
+0 0 0 40 40 -180
+
+pop
+pop
+
+pop
+
+display
+
+save
+tubby.png
